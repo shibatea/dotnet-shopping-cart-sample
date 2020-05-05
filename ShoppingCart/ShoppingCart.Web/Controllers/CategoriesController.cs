@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Service.Infrastructure;
 using ShoppingCart.Web.ViewModels;
@@ -8,24 +9,20 @@ namespace ShoppingCart.Web.Controllers
     public class CategoriesController : Controller
     {
         private readonly ICategory _category;
+        private readonly IMapper _mapper;
 
-        public CategoriesController(ICategory category)
+        public CategoriesController(ICategory category, IMapper mapper)
         {
             _category = category;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
             var allCategories = _category.GetAllCategories();
-            var vm = allCategories
-                .Select(category => new CategoryViewModel
-                {
-                    Id = category.Id,
-                    Name = category.Name
-                })
-                .ToList();
-            return View(vm);
+            var mappedCategories = _mapper.Map<List<CategoryViewModel>>(allCategories);
+            return View(mappedCategories);
         }
 
         [HttpGet]
