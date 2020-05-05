@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ShoppingCart.Service.Infrastructure;
+using ShoppingCart.Service.Repositories;
 
 namespace ShoppingCart.Web
 {
@@ -24,6 +26,8 @@ namespace ShoppingCart.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddTransient<ICategory, CategoryRepo>();
+            services.AddTransient<IProduct, ProductRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
